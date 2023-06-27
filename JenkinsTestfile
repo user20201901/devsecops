@@ -28,7 +28,7 @@ pipeline {
         }
 
         stage('Docker Build and Push') {
-          when { expression { true } }
+          when { expression { false } }
           steps {
             withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
               sh 'printenv'
@@ -40,7 +40,7 @@ pipeline {
         }
 
         stage('Remove Unused docker image') {
-          when { expression { true } }
+          when { expression { false } }
           steps{
             sh "docker rmi $registry:$BUILD_NUMBER"
           }
