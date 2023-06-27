@@ -2,3 +2,8 @@ fileignoreconfig:
 - filename: sec_files/password.txt
   checksum: f1cfc4e74637c1399a305acaf7991724f54503ec159d4f6ad969cacdfb8e04c8
   ignore_detectors: [checksum]
+
+fileignoreconfig:
+- filename: JenkinsTestfile
+  checksum: 45e6d4b4f69611c4e1d36dabf4640326404be6f799f1e56cad75377cc4d0181c
+  ignore_detectors: [checksum]
