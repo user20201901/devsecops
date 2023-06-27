@@ -28,7 +28,7 @@ pipeline {
         }
 
         stage('Docker Build and Push') {
-          when { expression { true } }
+          when { expression { false } }
           steps {
             withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
               sh 'printenv'
@@ -40,7 +40,7 @@ pipeline {
         }
 
         stage('Remove Unused docker image') {
-          when { expression { true } }
+          when { expression { false } }
           steps{
             sh "docker rmi $registry:$BUILD_NUMBER"
           }
@@ -48,7 +48,7 @@ pipeline {
         stage('Kubernetes Deployment - DEV') {
           steps {
             withKubeConfig([credentialsId: 'kubernetes-config']) {
-              sh "sed -i 's#replace#${registry}:${BUILD_NUMBER}#g' k8s_deployment_service.yaml"
+              sh "sed -i 's#replace#${registry}:13#g' k8s_deployment_service.yaml"
               sh "kubectl apply -f k8s_deployment_service.yaml"
             }
           }
