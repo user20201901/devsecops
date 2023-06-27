@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        registry = "mm167/numeric-app"
+        registryCredential = 'docker-hub'
+    }
+
     stages {
         stage('Build Artifact') {
             steps {
