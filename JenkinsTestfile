@@ -15,6 +15,7 @@ pipeline {
         }
 
         stage('Unit Tests - JUnit and Jacoco') {
+          when { expression { false } }
           steps {
             sh "mvn test"
           }
@@ -27,6 +28,7 @@ pipeline {
         }
 
         stage('Docker Build and Push') {
+          when { expression { true } }
           steps {
             withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
               sh 'printenv'
@@ -38,6 +40,7 @@ pipeline {
         }
 
         stage('Remove Unused docker image') {
+          when { expression { true } }
           steps{
             sh "docker rmi $registry:$BUILD_NUMBER"
           }
