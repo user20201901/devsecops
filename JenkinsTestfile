@@ -26,9 +26,19 @@ pipeline {
             }
           }
         }
-
-        stage('Docker Build and Push') {
+        stage('Mutation Tests - PIT') {
           when { expression { true } }
+          steps {
+            sh "mvn org.pitest:pitest-maven:mutationCoverage"
+          }
+          post {
+            always {
+              pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
+            }
+          }
+        }
+        stage('Docker Build and Push') {
+          when { expression { false } }
           steps {
             withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
               sh 'printenv'
@@ -40,12 +50,13 @@ pipeline {
         }
 
         stage('Remove Unused docker image') {
-          when { expression { true } }
+          when { expression { false } }
           steps{
             sh "docker rmi $registry:$BUILD_NUMBER"
           }
         }
         stage('Kubernetes Deployment - DEV') {
+          when { expression { false } }
           steps {
             withKubeConfig([credentialsId: 'kubernetes-config']) {
               sh "sed -i 's#replace#${registry}:${BUILD_NUMBER}#g' k8s_deployment_service.yaml"
