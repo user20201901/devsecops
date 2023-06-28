@@ -99,14 +99,14 @@ pipeline {
         stage('Kubernetes Deployment - DEV') {
           steps {
             withKubeConfig([credentialsId: 'kubernetes-config']) {
-              sh "bash k8s-deployment.sh"
+              sh "bash script/k8s-deployment.sh"
             }
           }
         }
         stage('Kubernetes Rollout') {
           steps {
             withKubeConfig([credentialsId: 'kubernetes-config']) {
-              sh "bash k8s-deployment-rollout-status.sh"
+              sh "bash script/k8s-deployment-rollout-status.sh"
             }
           }
         }
