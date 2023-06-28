@@ -72,7 +72,7 @@ pipeline {
           }
         }
         stage('Docker Build and Push') {
-          when { expression { false } }
+          when { expression { true } }
           steps {
             withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
               sh 'printenv'
@@ -84,11 +84,18 @@ pipeline {
         }
 
         stage('Remove Unused docker image') {
-          when { expression { false } }
+          when { expression { true } }
           steps{
             sh "docker rmi $registry:$BUILD_NUMBER"
           }
         }
+
+        stage('Vulnerability Scan - Kubernetes') {
+          steps {
+            sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy security/opa-k8s-security.rego k8s_deployment_service.yaml'
+          }
+        }
+
         stage('Kubernetes Deployment - DEV') {
           when { expression { false } }
           steps {
