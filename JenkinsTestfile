@@ -4,6 +4,12 @@ pipeline {
     environment {
         registry = "mm167/numeric-app"
         registryCredential = 'docker-hub'
+        deploymentName = "devsecops"
+        containerName = "devsecops-container"
+        serviceName = "devsecops-svc"
+        imageName = "mm167/numeric-app:${BUILD_NUMBER}"
+        applicationURL = "http://192.168.49.2"
+        applicationURI = "/increment/99"
     }
 
     stages {
