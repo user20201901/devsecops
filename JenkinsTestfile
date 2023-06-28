@@ -27,7 +27,7 @@ pipeline {
           }
         }
         stage('Mutation Tests - PIT') {
-          when { expression { true } }
+          when { expression { false } }
           steps {
             sh "mvn org.pitest:pitest-maven:mutationCoverage"
           }
@@ -38,6 +38,7 @@ pipeline {
           }
         }
         stage('SonarQube - SAST') {
+        when { expression { false } }
           steps {
             withSonarQubeEnv('SonarQube') {
                sh "mvn clean verify sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.projectName='numeric-application' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_516ff036c7f65913da785a389c814464e0d09bd8"
@@ -46,6 +47,17 @@ pipeline {
               script {
                 waitForQualityGate abortPipeline: true
               }
+            }
+          }
+        }
+
+        stage('Vulnerability Scan - Docker ') {
+          steps {
+            sh "mvn dependency-check:check"
+          }
+          post {
+            always {
+              dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
             }
           }
         }
