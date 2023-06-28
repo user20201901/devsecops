@@ -5,5 +5,11 @@ fileignoreconfig:
 
 fileignoreconfig:
 - filename: JenkinsTestfile
-  checksum: 64bbb7e74d64019ee70ec2b67779b67273677a6ec66800dc895f61f3d7cd9a5c
+  checksum: 6817193c7ea7d0a916e1781a2cb0bde970a0fe68567c161bba70834b7b4d43e9
   ignore_detectors: [filecontent,checksum]
+
+fileignoreconfig:
+- filename: pom.xml
+  checksum: fc70c83cecce2ebf23c1081e39b2916c19cb1b9f3303e02c09b2303ee92a3c06
+  ignore_detectors: [filecontent,checksum]
+
