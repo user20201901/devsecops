@@ -97,7 +97,7 @@ pipeline {
         }
 
         stage('Kubernetes Deployment - DEV') {
-          when { expression { false } }
+          when { expression { true } }
           steps {
             withKubeConfig([credentialsId: 'kubernetes-config']) {
               sh "sed -i 's#replace#${registry}:${BUILD_NUMBER}#g' k8s_deployment_service.yaml"
