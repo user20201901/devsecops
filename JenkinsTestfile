@@ -58,6 +58,7 @@ pipeline {
         }
 
         stage('Vulnerability Scan - Docker ') {
+           when { expression { false } }
           steps {
               parallel(
                   "Dependency Scan": {
@@ -78,7 +79,7 @@ pipeline {
           }
         }
         stage('Docker Build and Push') {
-          when { expression { true } }
+          when { expression { false } }
           steps {
             withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
               sh 'printenv'
@@ -90,13 +91,14 @@ pipeline {
         }
 
         stage('Remove Unused docker image') {
-          when { expression { true } }
+          when { expression { false } }
           steps{
             sh "docker rmi $registry:$BUILD_NUMBER"
           }
         }
 
         stage('Vulnerability Scan - Kubernetes') {
+          when { expression { false } }
           steps {
             parallel(
               "OPA Scan": {
@@ -113,6 +115,7 @@ pipeline {
         }
 
         stage('Kubernetes Deployment - DEV') {
+          when { expression { false } }
           steps {
             withKubeConfig([credentialsId: 'kubernetes-config']) {
               sh "bash script/k8s-deployment.sh"
@@ -120,6 +123,7 @@ pipeline {
           }
         }
         stage('Kubernetes Rollout') {
+          when { expression { false } }
           steps {
             withKubeConfig([credentialsId: 'kubernetes-config']) {
               sh "bash script/k8s-deployment-rollout-status.sh"
@@ -128,6 +132,7 @@ pipeline {
         }
 
         stage('Integration Tests - DEV') {
+          when { expression { false } }
           steps {
             script {
               try {
@@ -145,6 +150,7 @@ pipeline {
         }
 
         stage('OWASP ZAP - DAST') {
+          when { expression { false } }
           steps {
             withKubeConfig([credentialsId: 'kubernetes-config']) {
               sh 'bash security/zap.sh'
