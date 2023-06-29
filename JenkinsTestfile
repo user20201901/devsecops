@@ -106,11 +106,10 @@ pipeline {
               },
               "Kubesec Scan": {
                 sh "bash security/kubesec-scan.sh"
+              },
+              "Trivy Scan": {
+                sh "bash security/trivy-k8s-scan.sh"
               }
-              //,
-//              "Trivy Scan": {
-//                sh "bash security/trivy-k8s-scan.sh"
-//              }
             )
           }
         }
