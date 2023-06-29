@@ -8,7 +8,7 @@ pipeline {
         containerName = "devsecops-container"
         serviceName = "devsecops-svc"
         imageName = "mm167/numeric-app:${BUILD_NUMBER}"
-        applicationURL = "http://192.168.49.2"
+        applicationURL = "http://192.168.33.101"
         applicationURI = "/increment/99"
     }
 
@@ -132,7 +132,7 @@ pipeline {
         }
 
         stage('Integration Tests - DEV') {
-          when { expression { false } }
+          when { expression { true } }
           steps {
             script {
               try {
