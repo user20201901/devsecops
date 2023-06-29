@@ -150,26 +150,17 @@ pipeline {
         }
 
         stage('OWASP ZAP - DAST') {
-          when { expression { false } }
+          when { expression { true } }
           steps {
             withKubeConfig([credentialsId: 'kubernetes-config']) {
               sh 'bash security/zap.sh'
             }
           }
+          post {
+            always {
+              publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'owasp-zap-report', reportFiles: 'zap_report.html', reportName: 'OWASP ZAP HTML Report', reportTitles: 'OWASP ZAP HTML Report'])
+            }
+          }
         }
     }
-
-    //  post {
-        // always {
-           // publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'owasp-zap-report', reportFiles: 'zap_report.html', reportName: 'OWASP ZAP HTML Report', reportTitles: 'OWASP ZAP HTML Report'])
-        // }
-
-        // success {
-
-        // }
-
-        // failure {
-
-        // }
-     //  }
 }
