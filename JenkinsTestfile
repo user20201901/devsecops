@@ -58,18 +58,19 @@ pipeline {
         }
 
         stage('Vulnerability Scan - Docker ') {
-           when { expression { false } }
+           when { expression { true } }
           steps {
               parallel(
                   "Dependency Scan": {
                     sh "mvn dependency-check:check"
-                  },
-                  "Trivy Scan": {
-                    sh "bash security/trivy-docker-image-scan.sh"
-                  },
-                  "OPA Conftest": {
-                   sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy security/opa-docker-security.rego Dockerfile'
                   }
+                  //,
+            //      "Trivy Scan": {
+              //      sh "bash security/trivy-docker-image-scan.sh"
+                //  },
+                  // "OPA Conftest": {
+                   // sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy security/opa-docker-security.rego Dockerfile'
+                  // }
               )
           }
           post {
