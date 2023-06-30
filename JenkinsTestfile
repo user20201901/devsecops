@@ -158,7 +158,7 @@ pipeline {
           }
           post {
             always {
-              publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'owasp-zap-report', reportFiles: 'zap_report.html', reportName: 'HTML Owasp Report', reportTitles: 'Owasp Report', useWrapperFileDirectly: true])
+              publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true, reportDir: '.', reportFiles: 'zap_report.html', reportName: 'HTML Owasp Zap Report', reportTitles: 'Owasp Report'])
             }
           }
         }
